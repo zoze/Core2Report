@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Core2._2Reporting.Models;
+using System.Globalization;
 
 namespace Core2._2Reporting.Controllers
 {
@@ -48,11 +49,6 @@ namespace Core2._2Reporting.Controllers
             return File(fileBytes, "application/force-download", fileName);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
 
         private string GenerateReport()
         {
@@ -123,8 +119,14 @@ namespace Core2._2Reporting.Controllers
 
 
             string dir = System.IO.Path.Combine(_webRootPath, "Reports");
-            string newGuid = Guid.NewGuid().ToString("N");
-            string newFileName = $"{newGuid}.pdf";
+
+            //If You Want To Delete Old Pdf File 
+            DeleteOldFiles(dir);
+
+            //string _newName = Guid.NewGuid().ToString("N");
+            CultureInfo ci_en = new CultureInfo("en-US");
+            string _newName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", ci_en);
+            string newFileName = $"{_newName}.pdf";
 
             var filePath = System.IO.Path.Combine(dir, newFileName);
             System.IO.File.WriteAllBytes(filePath, reportResult.MainStream);
@@ -150,5 +152,31 @@ namespace Core2._2Reporting.Controllers
 
 
         }
+        private void DeleteOldFiles(string directory)
+        {
+            CultureInfo ci_en = new CultureInfo("en-US");
+
+            System.IO.DirectoryInfo di = new DirectoryInfo(directory);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                try
+                {
+                    var fileName = file.Name.Substring(0, 17);
+                    DateTime fileDateCreated = DateTime.ParseExact(fileName, "yyyyMMddHHmmssfff", ci_en);
+                    int sinceDays = Convert.ToInt32((DateTime.UtcNow - fileDateCreated).TotalDays);
+                    if (sinceDays>2)
+                    {
+                        file.Delete();
+                    }
+                }
+                catch (Exception)
+                {
+                    file.Delete();
+                }
+                
+            }
+
+        }
+
     }
 }
