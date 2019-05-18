@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h2>How can you generate and view rdlc Report in ASP.NET Core.</h2>
+
+    <br />
+    <div class="alert alert-danger">
+        <p>You Must Add these Packages </p>
+        <p>
+            <code>
+                "AspNetCore.Reporting" Version="2.1.0"
+                <br />
+                "System.Drawing.Common" Version="4.6.0-preview5.19224.8"
+            </code>
+        </p>
+    </div>
+    <div class="alert alert-info" style="text-align:left">
+        <p><b>Note:in this example we do these steps:</b></p>
+        <p>1.Generate rdlc Report and save it in wwwroot/Reports folder as pdf file <b>**See HomeController > GenerateReport Method**</b></p>
+        <p>2.After that we have two option :</p>
+        <p>&nbsp;&nbsp;&nbsp; a>show pdf file in view using embeded tag <a target="_blank" asp-area="" asp-controller="Home" asp-action="ReportViewer">(ReportViewer action in Home Controller)</a></p>
+        <p>&nbsp;&nbsp;&nbsp; b>download pdf file directly <a target="_blank" asp-area="" asp-controller="Home" asp-action="ReportDownload">(ReportDownload action in Home Controller)</a></p>
+    </div>
+    <hr />
+    <div class="alert alert-warning">
+        <p>How Can You Design the rdlc Report ?</p>
+        <p>You Must Create New Asp.net WebForm Project to design the rdlc Report </p>
+        <p>After You finsh design the report copy it to .Net Core Project in ReportsFiles Folder </p>
+    </div>
+</div>

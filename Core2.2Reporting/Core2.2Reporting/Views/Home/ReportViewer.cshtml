@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "ReportViewer";
+}
+<h1>@ViewData["Title"]</h1>
+
+<h3>@ViewData["Message"]</h3>
+
+
+<div class="row">
+    <a class="btn btn-success" href="~/Reports/@ViewData["ReportName"]">Download</a>
+    <br />
+    <embed src="~/Reports/@ViewData["ReportName"]#navpanes=0&scrollbar=0" width="100%" height="800px">
+</div>
